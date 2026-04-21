@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>PHlix</title>
+<title>PHub</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
 <style>
@@ -646,7 +646,7 @@ footer{
     blockedCount++;
     updateBlockedBadge();
     flashBlocked();
-    console.warn('[PHlix Shield] Blocked popup:', url);
+    console.warn('[PHub Shield] Blocked popup:', url);
     return null;
   };
 
@@ -665,7 +665,7 @@ footer{
       if(/redirect|popup|open|navigate/i.test(e.data)) {
         blockedCount++;
         updateBlockedBadge();
-        console.warn('[PHlix Shield] Blocked iframe message:', e.data);
+        console.warn('[PHub Shield] Blocked iframe message:', e.data);
       }
     }
   });
@@ -687,7 +687,7 @@ footer{
       el.remove();
       blockedCount++;
       updateBlockedBadge();
-      console.warn('[PHlix Shield] Removed ad element:', src);
+      console.warn('[PHub Shield] Removed ad element:', src);
     }
   };
 
@@ -701,12 +701,12 @@ footer{
         if(node.tagName === 'IFRAME') {
           const src = node.src || '';
           if(isAdUrl(src) || (src && !src.startsWith(location.origin) &&
-             !/vidsrc|2embed|smashystream|youtube|getsuperembed/i.test(src) &&
+             !/vidsrc|2embed|smashystream|youtube|multiembed/i.test(src) &&
              node.style.zIndex > 100)) {
             node.remove();
             blockedCount++;
             updateBlockedBadge();
-            console.warn('[PHlix Shield] Removed suspicious iframe:', src);
+            console.warn('[PHub Shield] Removed suspicious iframe:', src);
           }
         }
         // Remove fixed/absolute overlays injected at top z-index
@@ -718,7 +718,7 @@ footer{
             node.remove();
             blockedCount++;
             updateBlockedBadge();
-            console.warn('[PHlix Shield] Nuked overlay element');
+            console.warn('[PHub Shield] Nuked overlay element');
           }
         }
       }
@@ -739,7 +739,7 @@ footer{
       blockedCount++;
       updateBlockedBadge();
       flashBlocked();
-      console.warn('[PHlix Shield] Blocked ad link click:', href);
+      console.warn('[PHub Shield] Blocked ad link click:', href);
     }
   }, true);
 
@@ -767,7 +767,7 @@ footer{
 <!-- NAV -->
 <nav id="nav">
   <a href="#" class="logo">
-    PH<span class="logo-acc">L<span class="logo-dot"></span></span>IX
+    PH<span class="logo-acc">U<span class="logo-dot"></span></span>B
   </a>
   <div class="nav-links">
     <a href="#" class="on">Home</a>
@@ -902,7 +902,7 @@ footer{
 
 <footer>
   <div>
-    <div class="flogo">PH<span>L</span>IX</div>
+    <div class="flogo">PH<span>U</span>B</div>
     <div class="fnote">Free movie streaming index · Not affiliated with any adult platform</div>
     <div class="flinks">
       <a href="#">Privacy</a><a href="#">Terms</a><a href="#">DMCA</a><a href="login.html">Sign Out</a>
@@ -911,10 +911,10 @@ footer{
   <div style="display:flex;flex-direction:column;gap:8px;align-items:flex-end">
     <div class="fbadge">
       <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="m8 21 4-4 4 4"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-      Data · TMDB &nbsp;|&nbsp; Streams · SuperEmbed + VidSrc
+      Data · TMDB &nbsp;|&nbsp; Streams · VidSrc + MultiEmbed
     </div>
     <div class="ab-badge" style="font-size:0.65rem">
-      <span class="ab-dot"></span> PHlix Shield active — ads &amp; popups blocked
+      <span class="ab-dot"></span> PHub Shield active — ads &amp; popups blocked
     </div>
   </div>
 </footer>
@@ -933,14 +933,14 @@ footer{
       <div class="pm-genres" id="pmGenres"></div>
       <div class="pm-over" id="pmOver"></div>
 
-      <!-- SOURCE SWITCHER — includes SuperEmbed (PHP player) -->
+      <!-- SOURCE SWITCHER -->
       <div class="src-row">
         <span class="src-lbl">Player</span>
-        <button class="src-btn on"        onclick="switchSrc('superembed',this)">SuperEmbed ✦</button>
-        <button class="src-btn"           onclick="switchSrc('vidsrc',this)">VidSrc</button>
-        <button class="src-btn"           onclick="switchSrc('vidsrcpro',this)">VidSrc Pro</button>
-        <button class="src-btn"           onclick="switchSrc('embed2',this)">2Embed</button>
-        <button class="src-btn"           onclick="switchSrc('smashy',this)">SmashyStream</button>
+        <button class="src-btn on"  onclick="switchSrc('vidsrc',this)">VidSrc</button>
+        <button class="src-btn"      onclick="switchSrc('vidsrcpro',this)">VidSrc Pro</button>
+        <button class="src-btn"      onclick="switchSrc('embed2',this)">2Embed</button>
+        <button class="src-btn"      onclick="switchSrc('smashy',this)">SmashyStream</button>
+        <button class="src-btn"      onclick="switchSrc('multiembed',this)">MultiEmbed</button>
       </div>
 
       <!-- blocked count inside modal -->
@@ -986,8 +986,7 @@ footer{
           <div class="ss-row">
             <div><div class="ss-rl">Default Player</div><div class="ss-rs">Preferred source</div></div>
             <select id="defPlayer" onchange="saveSetting('defPlayer',this.value)" style="background:var(--s2);border:1px solid var(--b2);color:var(--t);border-radius:6px;padding:5px 9px;font-family:inherit;font-size:0.76rem;cursor:pointer;outline:none">
-              <option value="superembed">SuperEmbed ✦ (recommended)</option>
-              <option value="vidsrc">VidSrc</option>
+              <option value="vidsrc">VidSrc (recommended)</option>
               <option value="vidsrcpro">VidSrc Pro</option>
               <option value="embed2">2Embed</option>
               <option value="smashy">SmashyStream</option>
@@ -1003,7 +1002,7 @@ footer{
         </div>
       </div>
       <div>
-        <div class="ss-lbl">PHlix Shield</div>
+        <div class="ss-lbl">PHub Shield</div>
         <div class="ss-card">
           <div class="ss-row">
             <div>
@@ -1074,22 +1073,22 @@ const IM='https://image.tmdb.org/t/p/';
 const GM={28:'Action',12:'Adventure',16:'Animation',35:'Comedy',80:'Crime',99:'Documentary',18:'Drama',10751:'Family',14:'Fantasy',36:'History',27:'Horror',10402:'Music',9648:'Mystery',10749:'Romance',878:'Sci-Fi',53:'Thriller',10752:'War',37:'Western'};
 
 // ── SOURCE URLS ──────────────────────────────────────────────────────
-// SuperEmbed goes through your PHP proxy which strips tracking & redirects
+// Note: player.php requires a PHP host (not GitHub Pages).
+// If you're on GitHub Pages, use vidsrc/embed2/smashy below.
+// If you have a PHP host, add: superembed: id => `player.php?video_id=${id}&tmdb=1`
 const SRCS = {
-  // player.php proxies getsuperembed.link — cleaner, fewer ads than raw vidsrc
-  superembed: id => `player.php?video_id=${id}&tmdb=1`,
   vidsrc:     id => `https://vidsrc.to/embed/movie/${id}`,
   vidsrcpro:  id => `https://vidsrc.pro/embed/movie?tmdb=${id}`,
   embed2:     id => `https://www.2embed.cc/embed/${id}`,
-  smashy:     id => `https://embed.smashystream.com/playere.php?tmdb=${id}`
+  smashy:     id => `https://embed.smashystream.com/playere.php?tmdb=${id}`,
+  multiembed: id => `https://multiembed.mov/directstream.php?video_id=${id}&tmdb=1`,
 };
 
-// sandbox attribute — allows autoplay+scripts inside iframe but blocks popups & top navigation
-const IFRAME_SANDBOX = 'allow-scripts allow-same-origin allow-forms allow-presentation allow-popups-to-escape-sandbox';
+
 // NOTE: we intentionally omit "allow-top-navigation" and "allow-popups" — this is
 // the single biggest lever for killing redirect ads and popunders.
 
-let heroMs=[],heroI=0,heroTmr=null,curId=null,curSrc='superembed';
+let heroMs=[],heroI=0,heroTmr=null,curId=null,curSrc='vidsrc';
 const api=(p,x='')=>`https://api.themoviedb.org/3${p}?api_key=${K}&${x}`;
 const im=(p,s='w500')=>p?`${IM}${s}${p}`:'';
 const get=async u=>{const r=await fetch(u);return r.json()};
@@ -1210,11 +1209,11 @@ async function openPlayer(id, infoOnly=false){
   document.getElementById('pModal').classList.add('op');
   document.body.style.overflow='hidden';
 
-  const pref = localStorage.getItem('defPlayer') || 'superembed';
+  const pref = localStorage.getItem('defPlayer') || 'vidsrc';
   curSrc = pref;
 
   // highlight active source button
-  const srcLabels = {superembed:'SuperEmbed ✦',vidsrc:'VidSrc',vidsrcpro:'VidSrc Pro',embed2:'2Embed',smashy:'SmashyStream'};
+  const srcLabels = {vidsrc:'VidSrc',vidsrcpro:'VidSrc Pro',embed2:'2Embed',smashy:'SmashyStream',multiembed:'MultiEmbed'};
   document.querySelectorAll('.src-btn').forEach(b=>b.classList.toggle('on', b.textContent.trim()===srcLabels[pref]));
 
   if(!infoOnly) {
@@ -1228,7 +1227,7 @@ async function openPlayer(id, infoOnly=false){
         </div>
         <div class="pph-t">Click to stream</div>
         <div class="pph-s">Multiple sources available</div>
-        <div class="pph-shield">🛡 PHlix Shield active — ads &amp; popups blocked</div>
+        <div class="pph-shield">🛡 PHub Shield active — ads &amp; popups blocked</div>
       </div>`;
   }
 
@@ -1262,7 +1261,7 @@ async function openPlayer(id, infoOnly=false){
     });
     const tr=(vid.results||[]).find(v=>v.type==='Trailer'&&v.site==='YouTube');
     document.getElementById('trFrame').innerHTML=tr
-      ?`<iframe src="https://www.youtube.com/embed/${tr.key}?rel=0&modestbranding=1" allowfullscreen loading="lazy" style="width:100%;height:100%;border:none"></iframe>`
+      ?`<iframe src="https://www.youtube.com/embed/${tr.key}?rel=0&modestbranding=1" loading="lazy" style="width:100%;height:100%;border:none"></iframe>`
       :`<div style="display:flex;align-items:center;justify-content:center;height:200px;color:var(--t3)">No trailer available</div>`;
     const rs=document.getElementById('relScr');
     (rel.results||[]).slice(0,12).forEach(m=>rs.appendChild(makeCard(m)));
@@ -1272,16 +1271,14 @@ async function openPlayer(id, infoOnly=false){
 
 function loadSrc(id, src){
   curSrc = src;
-  const url = (SRCS[src] || SRCS.superembed)(id);
+  const url = (SRCS[src] || SRCS.vidsrc)(id);
   // KEY: sandbox blocks popups (no allow-popups) and top navigation (no allow-top-navigation)
   // allow-popups-to-escape-sandbox is also omitted to keep everything contained
   const pa = document.getElementById('pArea');
   pa.innerHTML = `<div class="pop-blocked" id="popBlockedNotice">🛡 Popup blocked</div>
     <iframe
       src="${url}"
-      sandbox="${IFRAME_SANDBOX}"
       allow="autoplay; fullscreen; picture-in-picture"
-      allowfullscreen
       loading="lazy"
       style="width:100%;height:100%;border:none;display:block"
     ></iframe>`;
@@ -1348,7 +1345,7 @@ function openSettings(){
   document.getElementById('uDrop').classList.remove('op');
   document.getElementById('sModal').classList.add('op');
   document.body.style.overflow='hidden';
-  document.getElementById('defPlayer').value=localStorage.getItem('defPlayer')||'superembed';
+  document.getElementById('defPlayer').value=localStorage.getItem('defPlayer')||'vidsrc';
   document.getElementById('showCW').checked=localStorage.getItem('showCW')!=='false';
 }
 function closeSettings(){document.getElementById('sModal').classList.remove('op');document.body.style.overflow=''}
